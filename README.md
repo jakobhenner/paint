@@ -1,4 +1,4 @@
-![Paint brushes](http://f.cl.ly/items/2y0G2e0T081r0X3h0C0f/paint.png)
+![Paint brushes](https://dzwonsemrish7.cloudfront.net/items/2y1S0P3g070D3N1Z2l1g/paint.png?v=f6ad42f6)
 
 # paint-reactive
 
