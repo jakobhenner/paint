@@ -1,4 +1,4 @@
-import panel from '@/js/shaders/panel.frag'
+import panel from './shaders/panel.frag'
 
 var CONSTANT_NAMES = [
     'ACTIVE_ATTRIBUTES',
@@ -977,7 +977,7 @@ WrappedGL.loadTextFiles = function (filenames, onLoaded) {
   const results = {}
 
   filenames.forEach(name => {
-    const result = require(`@/js/shaders/${name}`)
+    const result = require(`./shaders/${name}`)
     results[name] = result
   })
 
