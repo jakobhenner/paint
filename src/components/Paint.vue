@@ -4,11 +4,11 @@
 
 <script>
 import gsap from 'gsap'
-import map from '@/js/map'
-import WrappedGL from '@/js/wrappedgl'
-import Paint from '@/js/paint'
+import map from '../js/map'
+import WrappedGL from '../js/wrappedgl'
+import Paint from '../js/paint'
 
-import props from '@/js/props'
+import props from '../js/props'
 
 
 export default {
