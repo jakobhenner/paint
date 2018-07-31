@@ -254,12 +254,7 @@ const Paint = function (canvas, wgl, props) {
 
       this.interactionState = INTERACTION_MODE.NONE;
 
-
-      var update = (function () {
-          this.update();
-          requestAnimationFrame(update);
-      }).bind(this);
-      update();
+      if (this.props.playing) this.play()
   }
 }
 
@@ -343,7 +338,26 @@ Paint.prototype.getPaintingResolutionHeight = function () {
     return Math.ceil(this.paintingRectangle.height * this.resolutionScale);
 };
 
+Paint.prototype.play = function () {
+
+  if (this.raf !== null && typeof this.raf !== 'undefined') return false
+  var update = (() =>{
+    this.update();
+    this.raf = requestAnimationFrame(update);
+  }).bind(this);
+
+  update();
+  this.initDraw()
+}
+
+Paint.prototype.pause = function () {
+  cancelAnimationFrame(this.raf)
+  this.raf = null
+  this.stopDraw()
+}
+
 Paint.prototype.update = function () {
+    console.log(this.raf)
     var wgl = this.wgl;
     var canvas = this.canvas;
     var simulationFramebuffer = this.simulationFramebuffer;
@@ -407,7 +421,6 @@ Paint.prototype.update = function () {
         } else if (this.colorModel === COLOR_MODEL.RGB) {
             paintingProgram = this.interactionState === INTERACTION_MODE.RESIZING ? this.resizingPaintingProgramRGB : this.paintingProgramRGB;
         }
-        console.log(this.props.diffuseScale, 'sdfjksfhdsjk')
         var paintingDrawState = wgl.createDrawState()
             .bindFramebuffer(this.framebuffer)
             .vertexAttribPointer(this.quadVertexBuffer, paintingProgram.getAttribLocation('a_position'), 2, wgl.FLOAT, false, 0, 0)
@@ -738,7 +751,6 @@ Paint.prototype.onMouseMove = function (event) {
 };
 
 Paint.prototype.onMouseUp = function (event) {
-  console.log('onMouseUp')
     if (event.preventDefault) event.preventDefault();
 
     var position = Utilities.getMousePosition(event, this.canvas);

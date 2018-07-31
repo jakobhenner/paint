@@ -1,4 +1,11 @@
 const props = {
+  position: {
+    type: Object,
+    default () {
+      return {}
+    }
+  },
+  playing: Boolean,
   color: {
     type: Array,
     default () {

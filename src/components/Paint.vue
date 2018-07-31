@@ -3,13 +3,11 @@
 </template>
 
 <script>
-import gsap from 'gsap'
 import map from '../js/map'
 import WrappedGL from '../js/wrappedgl'
 import Paint from '../js/paint'
 
 import props from '../js/props'
-
 
 export default {
   name: 'Paint',
@@ -17,16 +15,6 @@ export default {
     ...props
   },
   methods: {
-    drawCircle (angle) {
-      const _angle = angle * Math.PI / 180
-
-      const radius = this.painter.canvas.width / 2 - (this.painter.props.brushScale * 100) - 10
-
-      return {
-        x: this.painter.canvas.width / 2 + radius * Math.cos(_angle),
-        y: this.painter.canvas.height / 2 + radius * Math.sin(_angle)
-      }
-    },
     clear () {
       this.painter.clear()
     },
@@ -98,6 +86,12 @@ export default {
     },
     quality () {
       this.painter.resolutionScale = this.quality
+    },
+    playing () {
+      this.playing ? this.painter.play() : this.painter.pause()
+    },
+    position () {
+      this.painter.draw(this.position.x, this.position.y)
     }
   },
   mounted () {
@@ -106,71 +100,14 @@ export default {
 
     if (wgl !== null && wgl.hasFloatTextureSupport()) {
       this.painter = new Paint(canvas, wgl, this.$props);
-    } else {
-      // Error
     }
-
-    const radius = this.painter.canvas.width / 2 - (this.painter.props.brushScale * 100) - 10
-
-    const test = { angle: 0 }
-
-    const circle = {
-      x: radius * Math.cos(test.angle),
-      y: radius * Math.sin(test.angle)
-    }
-
-    const position = {
-      x: this.painter.canvas.width / 2 + (circle.x * Math.random()),
-      y: this.painter.canvas.height / 2 + (circle.y * Math.random())
-    }
-
-    //this.painter.initDraw(position.x, position.y)
-    this.painter.initDraw()
-
-    let time = performance.now()
-    let first = false
-
-    gsap.to(test, 0.9, {
-      angle: 360,
-      //ease: Power0.easeNone,
-      ease: Power4.easeIn,
-      onUpdate: () => {
-        const now = performance.now()
-
-        // if (now - time < 300) return false
-        //const position = this.drawCircle(test.angle)
-
-        const radius = this.painter.canvas.width / 2 - (this.painter.props.brushScale * 100) - 10
-
-        const circle = {
-          x: (radius / 1.5) * Math.cos(test.angle),
-          y: (radius / 1.5) * Math.sin(test.angle)
-        }
-
-        const position = {
-          x: this.painter.canvas.width / 2 + (circle.x * Math.random()),
-          y: this.painter.canvas.height / 2 + (circle.y * Math.random())
-        }
-
-        this.painter.draw(position.x, position.y)
-      },
-      onComplete: () => {
-        this.painter.stopDraw()
-      }
-    })
-
   }
 }
 </script>
 
 <style scoped>
 canvas {
-  position: absolute;
-  width: 60vh;
-  height: 60vh;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  /*filter: contrast(1.05);*/
+  width: 100%;
+  height: 100%;
 }
 </style>
